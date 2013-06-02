@@ -1,0 +1,27 @@
+body {
+  background-color: #666;
+  color: #FFF;
+}
+.grid {
+  width: 500px;
+  height: 500px;
+  margin: auto;
+}
+.square {
+  width: 10px;
+  height: 10px;
+  color: #000;
+  float: left;
+}
+.sugar-0 { background-color: #FFF; }
+.sugar-1 { background-color: #CBB; }
+.sugar-2 { background-color: #C99; }
+.sugar-3 { background-color: #C66; }
+.sugar-4 { background-color: #C33; }
+.occupied {
+  /*content: ".";*/
+  /*background-color: #F00;*/
+  outline: 1px solid #000;
+/*  border-top: 1px solid #000;
+  border-right: 1px solid #000;
+*/}

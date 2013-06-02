@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Sugarscape</title>
+    <link rel="stylesheet" type="text/css" href="css/sugarscape.css">
+    <script type='text/javascript' src='js/sugarscape.js'></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+      var grid = new Sugarscape.Grid();
+      var gridView = new Sugarscape.GridView(grid)
+      gridView.render();
+      window.addEventListener('keyup', function(event) {
+        if (event.which == 73) {
+          grid.wakeAgents();
+          grid.growSugar();
+          gridView.render();
+        }
+      });
+    </script>
+  </body>
+</html>
