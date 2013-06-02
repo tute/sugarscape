@@ -4,8 +4,9 @@ Sugarscape = {
   }
 }
 
-Sugarscape.Agent = function(grid, square) {
-  this.currentSugar = 0;
+Sugarscape.Agent = function(id, grid, square) {
+  this.id = id;
+  this.currentSugar = 1;
   this.visionRange        = Sugarscape.random(1, 6);
   this.metabolizationRate = Sugarscape.random(1, 4);
   this.maxLifetime        = Sugarscape.random(20, 100);
@@ -13,35 +14,64 @@ Sugarscape.Agent = function(grid, square) {
   this.moveTo(square);
 }
 Sugarscape.Agent.prototype = {
+  isAlive: function() {
+    return this.currentSugar > 0;
+  },
   forage: function() {
-    var sweetestSquare = this.sweetestVisibleSquare();
-    this.moveTo(sweetestSquare);
-    this.eatSugar();
-    this.metabolizeSugar();
+    if (this.isAlive()) {
+      var sweetestSquare = this.sweetestVisibleSquare();
+      this.moveTo(sweetestSquare);
+      this.eatSugar();
+      this.metabolizeSugar();
+    }
   },
   sweetestVisibleSquare: function() {
-    var sweetestSquare = null;
-    for (var x = 1; x <= this.visionRange && this.square.x + x < this.grid.width - 1; x++) {
-      var square = this.grid.squareAt(this.square.x + x, this.square.y);
-      if (sweetestSquare == null) { sweetestSquare = square }
-      else if (square.currentSugar > sweetestSquare.currentSugar) { sweetestSquare = square }
+    var minX = Math.max.apply(null, [this.square.x - this.visionRange, 0]);
+    var maxX = Math.min.apply(null, [this.square.x + this.visionRange, this.grid.width - 1]);
+    var minY = Math.max.apply(null, [this.square.y - this.visionRange, 0]);
+    var maxY = Math.min.apply(null, [this.square.y + this.visionRange, this.grid.height - 1]);
+
+    var maxSugarThusFar = 0;
+    var sweetestSquares = [];
+    var testedSquares = [];
+    for (var x = minX; x <= maxX; x++) {
+      for (var y = minY; y <= maxY; y++) {
+        var square = this.grid.squareAt(x, y);
+        testedSquares.push(square);
+        if (!square.isOccupied()) {
+          if (square.currentSugar == maxSugarThusFar) {
+            // if (this.id == 1) { console.log('id:', this.id, 'candidate:', square); }
+            sweetestSquares.push(square);
+          } else if (square.currentSugar > maxSugarThusFar) {
+            // if (this.id == 1) { console.log('id:', this.id, 'candidate:', square); }
+            maxSugarThusFar = square.currentSugar;
+            sweetestSquares.length = 0;
+            sweetestSquares.push(square);
+          }
+        }
+      }
     };
-    for (var x = 1; x <= this.visionRange && this.square.x - x >= 0; x++) {
-      var square = this.grid.squareAt(this.square.x - x, this.square.y);
-      if (sweetestSquare == null) { sweetestSquare = square }
-      else if (square.currentSugar > sweetestSquare.currentSugar) { sweetestSquare = square }
-    };
-    for (var y = 1; y <= this.visionRange && this.square.y + y < this.grid.height - 1; y++) {
-      var square = this.grid.squareAt(this.square.x, this.square.y + y);
-      if (sweetestSquare == null) { sweetestSquare = square }
-      else if (square.currentSugar > sweetestSquare.currentSugar) { sweetestSquare = square }
-    };
-    for (var y = 1; y <= this.visionRange && this.square.y - y >= 0; y++) {
-      var square = this.grid.squareAt(this.square.x, this.square.y - y);
-      if (sweetestSquare == null) { sweetestSquare = square }
-      else if (square.currentSugar > sweetestSquare.currentSugar) { sweetestSquare = square }
-    };
-    return sweetestSquare;
+    var sweetest = sweetestSquares[Sugarscape.random(0, sweetestSquares.length - 1)];
+    // if (sweetest == undefined) {
+    //   console.log('id:', this.id, 'agent:', this);
+    //   console.log('id:', this.id, 'square:', this.square);
+    //   console.log('id:', this.id, 'testedSquares:', testedSquares);
+    //   console.log('id:', this.id, 'sweetestSquares:', sweetestSquares);
+    //   console.log('id:', this.id, '[minX, minY]:', [minX, minY]);
+    //   console.log('id:', this.id, '[maxX, maxY]:', [maxX, maxY]);
+    // }
+    // if (this.id == 1) {
+    //   console.log('id:', this.id, 'square:', this.square);
+    //   console.log('id:', this.id, 'sweetestSquares:', sweetestSquares);
+    // }
+    // console.log(
+    //   this,
+    //   this.square,
+    //   [minX, minY],
+    //   [maxX, maxY],
+    //   sweetest
+    // );
+    return sweetest;
   },
   moveTo: function(square) {
     if (this.square != undefined) { this.square.removeAgent(); }
@@ -49,10 +79,18 @@ Sugarscape.Agent.prototype = {
     this.square.addAgent(this);
   },
   eatSugar: function() {
+    // if (this.id < 3) {
+    //   console.log('id:', this.id, 'metabolizationRate: ', this.metabolizationRate);
+    //   console.log('id:', this.id, 'squareSugar: ', this.square.currentSugar);
+    //   console.log('id:', this.id, 'sugarBeforeEating: ', this.currentSugar);
+    // }
     this.currentSugar += this.square.harvestSugar();
+    // if (this.id < 3) { console.log('id:', this.id, 'sugarAfterEating: ', this.currentSugar); }
   },
   metabolizeSugar: function() {
+    // if (this.id < 3) { console.log('id:', this.id, 'sugarBeforeMetabolizing: ', this.currentSugar); }
     this.currentSugar -= this.metabolizationRate
+    // if (this.id < 3) { console.log('id:', this.id, 'sugarAfterMetabolizing: ', this.currentSugar); }
   }
 }
 
@@ -83,7 +121,7 @@ Sugarscape.Grid.prototype = {
     for (var i = 0; i < this.numAgents; i++) {
       var square = this.randomSquare();
       while(square.isOccupied()) { square = this.randomSquare(); }
-      var agent = new Sugarscape.Agent(this, square);
+      var agent = new Sugarscape.Agent(i, this, square);
       this.agents[i] = agent;
     };
   },
@@ -208,8 +246,8 @@ Sugarscape.GridView.prototype = {
         };
       };
     }
-    for (var x = 0; x < this.grid.squares.length; x++) {
-      for (var y = 0; y < this.grid.squares[x].length; y++) {
+    for (var y = 0; y < this.grid.squares.length; y++) {
+      for (var x = 0; x < this.grid.squares[y].length; x++) {
         this.squareViews[x][y].render();
       };
     };
@@ -225,14 +263,31 @@ Sugarscape.SquareView.prototype = {
   sugarClass: function() {
     return 'sugar-' + this.square.currentSugar;
   },
+  sugarTitle: function() {
+    return 'sugar: ' + this.square.currentSugar;
+  },
   agentClass: function() {
-    return this.square.isOccupied() ? 'occupied' : 'unoccupied';
+    if (this.square.isOccupied() && this.square.agent.isAlive()) {
+      return 'occupied agent-' + this.square.agent.id;
+    } else {
+      return 'unoccupied';
+    }
+  },
+  agentTitle: function() {
+    if (this.square.isOccupied()) {
+      return 'agent: ' + this.square.agent.id + ', agent-sugar: ' + this.square.agent.currentSugar;
+    } else {
+      return 'agent: none';
+    }
+  },
+  squareTitle: function() {
+    return 'position: (' + this.square.x + ',' + this.square.y + ')';
   },
   classString: function() {
     return ['square', this.agentClass(), this.sugarClass()].join(' ');
   },
   titleString: function() {
-    return [this.agentClass(), this.sugarClass()].join(', ');
+    return [this.squareTitle(), this.sugarTitle(), this.agentTitle()].join(', ');
   },
   render: function() {
     if (this.el == null) {

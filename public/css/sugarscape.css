@@ -13,15 +13,13 @@ body {
   color: #000;
   float: left;
 }
-.sugar-0 { background-color: #FFF; }
-.sugar-1 { background-color: #CBB; }
+.sugar-4 { background-color: #FFF; }
+.sugar-3 { background-color: #CBB; }
 .sugar-2 { background-color: #C99; }
-.sugar-3 { background-color: #C66; }
-.sugar-4 { background-color: #C33; }
-.occupied {
-  /*content: ".";*/
-  /*background-color: #F00;*/
-  outline: 1px solid #000;
-/*  border-top: 1px solid #000;
-  border-right: 1px solid #000;
-*/}
+.sugar-1 { background-color: #C66; }
+.sugar-0 { background-color: #C33; }
+
+.occupied { background-color: #006; }
+.dead { background-color: default; }
+
+.agent-1 { background-color: #0F0; }
