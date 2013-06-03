@@ -76,7 +76,7 @@ Sugarscape.Agent.prototype = {
   moveTo: function(square) {
     if (this.square != undefined) { this.square.removeAgent(); }
     this.square = square;
-    this.square.addAgent(this);
+    if (this.square != undefined) { this.square.addAgent(this); }
   },
   eatSugar: function() {
     // if (this.id < 3) {

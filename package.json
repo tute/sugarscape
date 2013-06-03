@@ -1,0 +1,31 @@
+{
+  "name": "sugarscape",
+  "version": "0.0.0",
+  "description": "Sugarscape Simulation in Javascript",
+  "main": "public/js/sugarscape.js",
+  "directories": {
+    "public": "public",
+    "test": "test"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "chai": "~1.6.0",
+    "mocha": "~1.10.0",
+    "sinon": "~1.7.2",
+    "sinon-chai": "~2.4.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/subakva/sugarscape.git"
+  },
+  "author": "Jason Wadsworth",
+  "license": "MIT",
+  "readmeFilename": "README.md",
+  "gitHead": "a588fe20b1910bde43f13092f2af9f77035a620d",
+  "bugs": {
+    "url": "https://github.com/subakva/sugarscape/issues"
+  }
+}
