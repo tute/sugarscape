@@ -6,17 +6,18 @@ Sugarscape = {
 
 Sugarscape.Agent = function(id, grid, square) {
   this.id = id;
-  this.currentSugar = 1;
+  this.currentSugar       = Sugarscape.random(1, 10);
   this.visionRange        = Sugarscape.random(1, 6);
   this.metabolizationRate = Sugarscape.random(1, 4);
-  this.maxLifetime        = Sugarscape.random(20, 100);
-  this.grid = grid;
+  this.maxLifetime        = Sugarscape.random(20, 300);
+  this.age                = Sugarscape.random(0, 100);
+  this.grid               = grid;
   this.moveTo(square);
 }
 
 Sugarscape.Agent.prototype = {
   isAlive: function() {
-    return this.currentSugar > 0;
+    return this.currentSugar > 0 && this.age <= this.maxLifetime;
   },
   forage: function() {
     if (this.isAlive()) {
@@ -24,6 +25,7 @@ Sugarscape.Agent.prototype = {
       this.moveTo(sweetestSquare);
       this.eatSugar();
       this.metabolizeSugar();
+      this.growOlder();
     }
   },
   sweetestVisibleSquare: function() {
@@ -92,6 +94,9 @@ Sugarscape.Agent.prototype = {
     // if (this.id < 3) { console.log('id:', this.id, 'sugarBeforeMetabolizing: ', this.currentSugar); }
     this.currentSugar -= this.metabolizationRate
     // if (this.id < 3) { console.log('id:', this.id, 'sugarAfterMetabolizing: ', this.currentSugar); }
+  },
+  growOlder: function() {
+    this.age += 1;
   }
 }
 
