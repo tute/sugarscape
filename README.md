@@ -14,3 +14,7 @@ Visualization of sugarscape:
 * display graph of wealth distribution
 * add ability to track progress of an individual agent
 * allow configuration parameters to be edited through a form
+
+## Bugs
+
+* Some agents dissapear while still being alive

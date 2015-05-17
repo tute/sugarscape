@@ -8,17 +8,60 @@
   <body>
     <p>Press space bar to play/pause the Sugarscape.</p>
 
+    <div id="sugarscape"></div>
+
+    <table>
+      <tr>
+        <td colspan="5" id="total-alive"></td>
+      </tr>
+      <tr>
+        <td id="info-0"></td>
+        <td id="info-1"></td>
+        <td id="info-2"></td>
+        <td id="info-3"></td>
+        <td id="info-4"></td>
+      </tr>
+    </table>
+
     <script>
       var grid = new Sugarscape.Grid();
       var gridView = new Sugarscape.GridView(grid)
       gridView.render();
 
-      var fps = 20; // Up to 60 frames per second
+      var fps = 30; // Up to 60 frames per second
       var isPlaying = true;
+
+      var updateInfo = function(agent, id) {
+        tdEl = document.getElementById("info-" + id);
+        tdEl.className = "alive-" + agent.isAlive();
+        tdEl.innerHTML =
+          "Agent " + agent.id + "<br>" +
+          "Age: " + agent.age + "<br>" +
+          "Metabol. Rate: " + agent.metabolizationRate + "<br>" +
+          "Vision Range: " + agent.visionRange + "<br>" +
+          "Current sugar: " + agent.currentSugar;
+      }
+
+      var updateInfos = function() {
+        var aliveAgents = grid.agents.filter(function(agent) {
+              return agent.isAlive();
+            });
+
+        tdEl = document.getElementById("total-alive");
+        tdEl.innerHTML = "Alive: " + aliveAgents.length + ". " +
+          "Dead: " + (grid.agents.length - aliveAgents.length);
+
+        for (i=0; i < 5; i++) {
+          if (aliveAgents[i]) {
+            updateInfo(aliveAgents[i], i);
+          }
+        }
+      }
 
       var tick = function() {
         setTimeout(function() {
           if (isPlaying) {
+            updateInfos();
             grid.wakeAgents();
             grid.growSugar();
             gridView.render();

@@ -243,9 +243,8 @@ Sugarscape.GridView = function(grid) {
 Sugarscape.GridView.prototype = {
   render: function() {
     if (this.el == null) {
-      this.el = document.createElement('div');
+      this.el = document.getElementById('sugarscape');
       this.el.setAttribute('class', 'grid');
-      document.body.appendChild(this.el);
       for (var x = 0; x < this.grid.squares.length; x++) {
         this.squareViews[x] = [];
         var row = this.grid.squares[x];

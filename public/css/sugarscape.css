@@ -3,6 +3,16 @@ body {
   color: #FFF;
   text-align: center;
 }
+table {
+  margin: 1em auto;
+}
+td {
+  padding: 1em;
+}
+td.alive-false {
+  background: black;
+  color: gray;
+}
 .grid {
   width: 500px;
   height: 500px;
