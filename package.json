@@ -20,8 +20,8 @@
     "type": "git",
     "url": "git://github.com/subakva/sugarscape.git"
   },
-  "author": "Jason Wadsworth",
-  "license": "MIT",
+  "author": "Tute Costa, Jason Wadsworth",
+  "license": "GPL",
   "readmeFilename": "README.md",
   "gitHead": "a588fe20b1910bde43f13092f2af9f77035a620d",
   "bugs": {
