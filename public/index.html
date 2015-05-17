@@ -3,17 +3,20 @@
   <head>
     <title>Sugarscape</title>
     <link rel="stylesheet" type="text/css" href="css/sugarscape.css">
-    <script type='text/javascript' src='js/sugarscape.js'></script>
   </head>
   <body>
-    <div id="sugarscape"></div>
-
     <p>Press "p" to play/pause the Sugarscape.</p>
 
+    <table><tr>
+      <td>
+        <div id="sugarscape"></div>
+      </td>
+      <td>
+        <div id="chart" style="width:300px; height:200px;"></div>
+      </td>
+    </tr></table>
+
     <table>
-      <tr>
-        <td colspan="5" id="total-alive"></td>
-      </tr>
       <tr>
         <td id="info-0"></td>
         <td id="info-1"></td>
@@ -28,6 +31,10 @@
       <input type="number" id="fps" value="30" min="1" max="60">
     </div>
 
+    <script src='js/highcharts-standalone.js'></script>
+    <script src='js/highcharts.js'></script>
+    <script src='js/sugarscape-charts.js'></script>
+    <script src='js/sugarscape.js'></script>
     <script>
       var grid = new Sugarscape.Grid();
       var gridView = new Sugarscape.GridView(grid)
@@ -57,9 +64,18 @@
               return agent.isAlive();
             });
 
-        tdEl = document.getElementById("total-alive");
-        tdEl.innerHTML = "Alive: " + aliveAgents.length + ". " +
-          "Dead: " + (grid.agents.length - aliveAgents.length);
+
+        if (Math.random() > 0.75) {
+          if (chart.series) {
+            chart.series[0].setData(
+              [
+                ["Alive", aliveAgents.length],
+                ["Dead", grid.agents.length - aliveAgents.length]
+              ],
+              true
+            );
+          }
+        }
 
         for (i=0; i < 5; i++) {
           if (aliveAgents[i]) {
