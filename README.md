@@ -13,7 +13,4 @@ Tests with QUnit. Open `test/index.html` in your browser.
 ## TODO
 
 * Backfill tests
-* Make scatter plot with vision/metabolism. Color them according to `isAlive()`
-  http://www.highcharts.com/demo/scatter
-* add ability to track progress of an individual agent
 * allow configuration parameters to be edited through a form

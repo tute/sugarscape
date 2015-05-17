@@ -8,6 +8,7 @@ table {
 }
 td {
   padding: 1em;
+  vertical-align: top;
 }
 
 .grid {

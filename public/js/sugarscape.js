@@ -5,14 +5,14 @@ Sugarscape = {
 }
 
 Sugarscape.Agent = function(id, grid, square) {
-  this.id = id;
-  this.currentSugar       = Sugarscape.random(1, 10);
-  this.visionRange        = Sugarscape.random(1, 6);
+  this.age          = Sugarscape.random(0, this.maxLifetime);
+  this.currentSugar = Sugarscape.random(1, 10);
+  this.grid         = grid;
+  this.id           = id;
+  this.maxLifetime  = Sugarscape.random(60, 100);
   this.metabolizationRate = Sugarscape.random(1, 4);
-  this.maxLifetime        = Sugarscape.random(60, 100);
-  this.age                = Sugarscape.random(0, this.maxLifetime);
-  this.grid               = grid;
-  this.square             = square;
+  this.square       = square;
+  this.visionRange  = Sugarscape.random(1, 6);
 }
 
 Sugarscape.Agent.prototype = {

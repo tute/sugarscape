@@ -1,6 +1,7 @@
 Sugarscape.Charts = {
   aliveAndDead: null,
   histogram: null,
+  scatter: null,
 
   initAliveAndDead: function() {
     this.aliveAndDead = new Highcharts.Chart({
@@ -89,6 +90,54 @@ Sugarscape.Charts = {
         values.push(agentsInCategory.length)
       }
       this.histogram.series[0].setData(values, true);
+    }
+  },
+
+  initScatter: function() {
+    this.scatter = new Highcharts.Chart({
+      chart: {
+        renderTo: "scatter",
+        type: 'bubble',
+        zoomType: 'xy'
+      },
+      title: { text: 'Vision vs. Metabolism' },
+      xAxis: { title: { text: 'Metabolism Rate' } },
+      yAxis: {
+        title: { text: 'Vision Range' }
+      },
+      legend: { enabled: false },
+      plotOptions: {
+        bubble: {
+          tooltip: {
+            headerFormat: '',
+            pointFormat: 'Metab. rate: {point.x}<br>' +
+              'Vision range {point.y}<br>' +
+              '{point.z} agents',
+            useHTML: true
+          }
+        }
+      },
+      series: [{ name: "Agents genetics", data: [] }]
+    });
+  },
+
+  updateScatter: function(agents) {
+    if (this.scatter.series) {
+      var counts = {};
+      grid.agents.forEach(function(agent) {
+        var str = "" + agent.metabolizationRate + "," + agent.visionRange;
+        counts[str] = (counts[str] || 0) + 1;
+      });
+
+      data = []
+      for (str in counts) {
+        var metabolism = parseInt(str.split(",")[0]);
+        var vision = parseInt(str.split(",")[1]);
+        var count = counts[str];
+        data.push([metabolism, vision, count])
+      };
+
+      this.scatter.series[0].setData(data, true);
     }
   },
 };

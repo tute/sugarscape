@@ -10,7 +10,7 @@
 
     <p>
       Press <a href="#" onclick="pause()">"p" to play/pause</a> the Sugarscape.
-      It also <a href="#" onclick="updateHistogram()">updates the wealth
+      It also <a href="#" onclick="updateCharts()">updates the wealth
       distribution plot</a>.
     </p>
 
@@ -30,6 +30,8 @@
         <div id="sugarscape"></div>
       </td>
       <td>
+        <div id="scatter" style="width:500px; height:300px;"></div>
+        <br>
         <div id="wealth" style="width:500px; height:300px;"></div>
         <br>
         <div id="chart" style="width:300px; height:200px; float: left"></div>
@@ -40,25 +42,30 @@
     <script src='js/sugarscape.js'></script>
     <script src='js/highcharts-standalone.js'></script>
     <script src='js/highcharts.js'></script>
+    <script src='js/highcharts-more.js'></script>
     <script src='js/sugarscape-charts.js'></script>
     <script>
       Sugarscape.Charts.initAliveAndDead();
       Sugarscape.Charts.initHistogram();
+      Sugarscape.Charts.initScatter();
 
       var grid = new Sugarscape.Grid();
       var gridView = new Sugarscape.GridView(grid)
       gridView.render();
 
       // Update wealth Histogram
-      var updateHistogram = function () {
+      var updateCharts = function () {
         Sugarscape.Charts.updateHistogram(grid.agents);
+        Sugarscape.Charts.updateScatter(grid.agents);
       }
+
+      setInterval(updateCharts, 5000);
 
       // Play and Pause
       var isPlaying = true;
       var pause = function () {
         isPlaying = !isPlaying;
-        updateHistogram();
+        updateCharts();
       }
 
       // Configure up to 60 frames per second
@@ -83,7 +90,7 @@
         if (event.which == 80) { pause() }
       };
 
-      Sugarscape.Charts.updateHistogram(grid.agents);
+      updateCharts();
       tick();
     </script>
   </body>

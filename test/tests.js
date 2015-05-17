@@ -1,7 +1,8 @@
 QUnit.test("Agent#isAlive()", function(assert) {
-  var agent = new Sugarscape.Agent();
-  agent.maxLifetime = 90;
+  var square = { agent: undefined };
+  var agent = new Sugarscape.Agent(null, null, square);
   agent.age = 20;
+  agent.maxLifetime = 90;
 
   agent.currentSugar = 3;
   assert.ok(agent.isAlive(), "with sugar agent is alive");
