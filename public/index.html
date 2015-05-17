@@ -10,13 +10,14 @@
       var grid = new Sugarscape.Grid();
       var gridView = new Sugarscape.GridView(grid)
       gridView.render();
-      window.addEventListener('keyup', function(event) {
-        if (event.which == 73) {
-          grid.wakeAgents();
-          grid.growSugar();
-          gridView.render();
-        }
-      });
+
+      var tick = function() {
+        grid.wakeAgents();
+        grid.growSugar();
+        gridView.render();
+        requestAnimationFrame(tick);
+      }
+      tick();
     </script>
   </body>
 </html>
