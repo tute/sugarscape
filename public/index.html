@@ -5,37 +5,34 @@
     <link rel="stylesheet" type="text/css" href="css/sugarscape.css">
   </head>
   <body>
-    <p>Press "p" to play/pause the Sugarscape.</p>
+    <h2>Instructions</h2>
+    <p>Press "p" to play/pause the Sugarscape. It updates the wealth distribution plot.</p>
+    <p>See code and more info in <a href="https://github.com/tute/sugarscape">GitHub</a>.</p>
 
     <table><tr>
       <td>
         <div id="sugarscape"></div>
       </td>
       <td>
+        <div id="wealth" style="width:500px; height:300px;"></div>
+        <br>
         <div id="chart" style="width:300px; height:200px;"></div>
       </td>
     </tr></table>
-
-    <table>
-      <tr>
-        <td id="info-0"></td>
-        <td id="info-1"></td>
-        <td id="info-2"></td>
-        <td id="info-3"></td>
-        <td id="info-4"></td>
-      </tr>
-    </table>
 
     <div id="form_controls">
       Frames per second:
       <input type="number" id="fps" value="30" min="1" max="60">
     </div>
 
+    <script src='js/sugarscape.js'></script>
     <script src='js/highcharts-standalone.js'></script>
     <script src='js/highcharts.js'></script>
     <script src='js/sugarscape-charts.js'></script>
-    <script src='js/sugarscape.js'></script>
     <script>
+      Sugarscape.Charts.initAliveAndDead();
+      Sugarscape.Charts.initHistogram();
+
       var grid = new Sugarscape.Grid();
       var gridView = new Sugarscape.GridView(grid)
       gridView.render();
@@ -48,46 +45,12 @@
         fps = fpsInput.value;
       });
 
-      var updateInfo = function(agent, id) {
-        tdEl = document.getElementById("info-" + id);
-        tdEl.className = "alive-" + agent.isAlive();
-        tdEl.innerHTML =
-          "Agent " + agent.id + "<br>" +
-          "Age: " + agent.age + "<br>" +
-          "Metabol. Rate: " + agent.metabolizationRate + "<br>" +
-          "Vision Range: " + agent.visionRange + "<br>" +
-          "Current sugar: " + agent.currentSugar;
-      }
-
-      var updateInfos = function() {
-        var aliveAgents = grid.agents.filter(function(agent) {
-              return agent.isAlive();
-            });
-
-
-        if (Math.random() > 0.75) {
-          if (chart.series) {
-            chart.series[0].setData(
-              [
-                ["Alive", aliveAgents.length],
-                ["Dead", grid.agents.length - aliveAgents.length]
-              ],
-              true
-            );
-          }
-        }
-
-        for (i=0; i < 5; i++) {
-          if (aliveAgents[i]) {
-            updateInfo(aliveAgents[i], i);
-          }
-        }
-      }
-
       var tick = function() {
         setTimeout(function() {
           if (isPlaying) {
-            updateInfos();
+            if (Math.random() <= 0.75) {
+              Sugarscape.Charts.updateAliveAndDead(grid.agents);
+            }
             grid.wakeAgents();
             grid.growSugar();
             gridView.render();
@@ -99,9 +62,11 @@
       window.onkeydown = function(event) {
         if (event.which == 80) {
           isPlaying = !isPlaying;
+          Sugarscape.Charts.updateHistogram(grid.agents);
         }
       };
 
+      Sugarscape.Charts.updateHistogram(grid.agents);
       tick();
     </script>
   </body>

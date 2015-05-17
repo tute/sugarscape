@@ -10,10 +10,6 @@ table {
 td {
   padding: 1em;
 }
-td.alive-false {
-  background: black;
-  color: gray;
-}
 
 .grid {
   width: 500px;
