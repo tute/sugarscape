@@ -6,9 +6,13 @@ Visualization of sugarscape:
 * http://en.wikipedia.org/wiki/Sugarscape
 * http://www.delanceyplace.com/view_archives.php?2260
 
+## Tests
+
+Tests with QUnit. Open `test/index.html` in your browser.
+
 ## TODO
 
-* NO TESTS WAT
+* Backfill tests
 * implement random agent births
 * implement click to display stats
 * record and display agent history

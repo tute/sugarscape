@@ -1,22 +1,15 @@
+<!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
-  <title>Mocha Tests</title>
-  <link rel="stylesheet" href="src/node_modules/mocha/mocha.css" />
+  <title>QUnit Example</title>
+  <link rel="stylesheet" href="qunit/qunit-1.18.0.css">
+  <script type='text/javascript' src='../public/js/sugarscape.js'></script>
 </head>
 <body>
-  <div id="mocha"></div>
-  <script src="src/node_modules/chai/chai.js"></script>
-  <script src="src/node_modules/sinon-chai/lib/sinon-chai.js"></script>
-  <script src="src/node_modules/mocha/mocha.js"></script>
-  <script>mocha.setup('bdd')</script>
-  <script src="src/public/js/sugarscape.js"></script>
-  <script src="sugarscape_spec.js"></script>
-  <script>
-    expect = chai.expect;
-    mocha.checkLeaks();
-    mocha.run();
-  </script>
+  <div id="qunit"></div>
+  <div id="qunit-fixture"></div>
+  <script src="qunit/qunit-1.18.0.js"></script>
+  <script src="tests.js"></script>
 </body>
 </html>
-

@@ -10,9 +10,9 @@ Sugarscape.Agent = function(id, grid, square) {
   this.visionRange        = Sugarscape.random(1, 6);
   this.metabolizationRate = Sugarscape.random(1, 4);
   this.maxLifetime        = Sugarscape.random(20, 300);
-  this.age                = Sugarscape.random(0, 100);
+  this.age                = Sugarscape.random(0, this.maxLifetime);
   this.grid               = grid;
-  this.moveTo(square);
+  this.square             = square;
 }
 
 Sugarscape.Agent.prototype = {
@@ -21,12 +21,19 @@ Sugarscape.Agent.prototype = {
   },
   forage: function() {
     if (this.isAlive()) {
-      var sweetestSquare = this.sweetestVisibleSquare();
-      this.moveTo(sweetestSquare);
+      this.growOlder();
+      this.moveTo(this.sweetestVisibleSquare());
       this.eatSugar();
       this.metabolizeSugar();
-      this.growOlder();
     }
+  },
+  growOlder: function() {
+    this.age += 1;
+  },
+  moveTo: function(square) {
+    this.square.removeAgent();
+    this.square = square;
+    this.square.addAgent(this);
   },
   sweetestVisibleSquare: function() {
     var minX = Math.max.apply(null, [this.square.x - this.visionRange, 0]);
@@ -77,27 +84,11 @@ Sugarscape.Agent.prototype = {
     // );
     return sweetest;
   },
-  moveTo: function(square) {
-    if (this.square != undefined) { this.square.removeAgent(); }
-    this.square = square;
-    if (this.square != undefined) { this.square.addAgent(this); }
-  },
   eatSugar: function() {
-    // if (this.id < 3) {
-    //   console.log('id:', this.id, 'metabolizationRate: ', this.metabolizationRate);
-    //   console.log('id:', this.id, 'squareSugar: ', this.square.currentSugar);
-    //   console.log('id:', this.id, 'sugarBeforeEating: ', this.currentSugar);
-    // }
     this.currentSugar += this.square.harvestSugar();
-    // if (this.id < 3) { console.log('id:', this.id, 'sugarAfterEating: ', this.currentSugar); }
   },
   metabolizeSugar: function() {
-    // if (this.id < 3) { console.log('id:', this.id, 'sugarBeforeMetabolizing: ', this.currentSugar); }
     this.currentSugar -= this.metabolizationRate
-    // if (this.id < 3) { console.log('id:', this.id, 'sugarAfterMetabolizing: ', this.currentSugar); }
-  },
-  growOlder: function() {
-    this.age += 1;
   }
 }
 
