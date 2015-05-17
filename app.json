@@ -1,0 +1,6 @@
+{
+  "name": "Sugarscape",
+  "description": "Sugarscape",
+  "repository": "https://github.com/tute/sugarscape",
+  "keywords": ["node", "express", "static"]
+}

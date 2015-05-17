@@ -2,8 +2,9 @@
 
 Visualization of sugarscape:
 
-* http://www.delanceyplace.com/view_archives.php?2260
+* http://sugarscape.herokuapp.com/
 * http://en.wikipedia.org/wiki/Sugarscape
+* http://www.delanceyplace.com/view_archives.php?2260
 
 ## TODO
 

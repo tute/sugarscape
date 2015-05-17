@@ -7,12 +7,11 @@
     "public": "public",
     "test": "test"
   },
-  "dependencies": {},
-  "devDependencies": {
-    "chai": "~1.6.0",
-    "mocha": "~1.10.0",
-    "sinon": "~1.7.2",
-    "sinon-chai": "~2.4.0"
+  "dependencies": {
+    "express": "~4.9.x"
+  },
+  "engines": {
+    "node": "0.12.2"
   },
   "scripts": {
     "test": "mocha"
