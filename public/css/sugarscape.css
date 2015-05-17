@@ -1,6 +1,5 @@
 body {
-  background-color: #666;
-  color: #FFF;
+  background-color: #eee;
   text-align: center;
 }
 
@@ -34,7 +33,3 @@ td {
   border-radius: 10px;
 }
 .dead { background-color: default; }
-
-#form_controls {
-  margin: 1em;
-}

@@ -4,9 +4,25 @@
     <title>Sugarscape</title>
     <link rel="stylesheet" type="text/css" href="css/sugarscape.css">
   </head>
+
   <body>
-    <h2>Instructions</h2>
-    <p>Press "p" to play/pause the Sugarscape. It updates the wealth distribution plot.</p>
+    <h2>The Sugarscape</h2>
+
+    <p>
+      Press <a href="#" onclick="pause()">"p" to play/pause</a> the Sugarscape.
+      It also <a href="#" onclick="updateHistogram()">updates the wealth
+      distribution plot</a>.
+    </p>
+
+    <p>
+      Frames per second:
+      <a href="#" onclick="updateFps(5)">5</a> &nbsp;
+      <a href="#" onclick="updateFps(15)">15</a> &nbsp;
+      <a href="#" onclick="updateFps(30)">30</a> &nbsp;
+      <a href="#" onclick="updateFps(45)">45</a> &nbsp;
+      <a href="#" onclick="updateFps(60)">60</a>.
+    </p>
+
     <p>See code and more info in <a href="https://github.com/tute/sugarscape">GitHub</a>.</p>
 
     <table><tr>
@@ -20,11 +36,6 @@
       </td>
     </tr></table>
 
-    <div id="form_controls">
-      Frames per second:
-      <input type="number" id="fps" value="30" min="1" max="60">
-    </div>
-
     <script src='js/sugarscape.js'></script>
     <script src='js/highcharts-standalone.js'></script>
     <script src='js/highcharts.js'></script>
@@ -37,13 +48,21 @@
       var gridView = new Sugarscape.GridView(grid)
       gridView.render();
 
-      var fps = 30; // Up to 60 frames per second
-      var isPlaying = true;
+      // Update wealth Histogram
+      var updateHistogram = function () {
+        Sugarscape.Charts.updateHistogram(grid.agents);
+      }
 
-      var fpsInput = document.getElementById('fps');
-      fpsInput.addEventListener('input', function() {
-        fps = fpsInput.value;
-      });
+      // Play and Pause
+      var isPlaying = true;
+      var pause = function () {
+        isPlaying = !isPlaying;
+        updateHistogram();
+      }
+
+      // Configure up to 60 frames per second
+      var fps = 5;
+      var updateFps = function (newFps) { fps = newFps; };
 
       var tick = function() {
         setTimeout(function() {
@@ -60,10 +79,7 @@
       }
 
       window.onkeydown = function(event) {
-        if (event.which == 80) {
-          isPlaying = !isPlaying;
-          Sugarscape.Charts.updateHistogram(grid.agents);
-        }
+        if (event.which == 80) { pause() }
       };
 
       Sugarscape.Charts.updateHistogram(grid.agents);
