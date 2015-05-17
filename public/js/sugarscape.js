@@ -99,6 +99,7 @@ Sugarscape.Grid = function() {
   this.width = 50;
   this.height = 50;
   this.numAgents = 250;
+  this.growthProbability = 0.9;
   this.initPeaks();
   this.initSquares();
   this.initAgents();
@@ -192,9 +193,11 @@ Sugarscape.Grid.prototype = {
     });
   },
   growSugar: function() {
-    this.eachSquare(function(square) {
-      square.growSugar();
-    });
+    if (Math.random() > this.growthProbability) {
+      this.eachSquare(function(square) {
+        square.growSugar();
+      });
+    }
   }
 }
 
