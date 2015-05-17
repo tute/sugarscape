@@ -312,6 +312,19 @@ Sugarscape.SquareView.prototype = {
     if (this.el == null) {
       this.el = document.createElement('div');
       this.gridView.el.appendChild(this.el);
+
+      var self = this;
+      this.el.addEventListener("click", function(event) {
+        if (self.square.agent) {
+          var agent = self.square.agent;
+          document.getElementById("inspect-agent").innerHTML = "" +
+            "id: " + agent.id +
+            " in (" + self.square.x + ", " + self.square.y + ")<br>" +
+            "Sugar: " + agent.currentSugar + "<br>" +
+            "Vision Range: " + agent.visionRange + "<br>" +
+            "Metabol. Rate: " + agent.metabolizationRate + ".";
+        }
+      }, false);
     }
     this.el.setAttribute('class', this.classString());
     this.el.setAttribute('title', this.titleString());
