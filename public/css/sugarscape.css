@@ -3,6 +3,7 @@ body {
   color: #FFF;
   text-align: center;
 }
+
 table {
   margin: 1em auto;
 }
@@ -13,6 +14,7 @@ td.alive-false {
   background: black;
   color: gray;
 }
+
 .grid {
   width: 500px;
   height: 500px;
@@ -34,3 +36,7 @@ td.alive-false {
 .dead { background-color: default; }
 
 .agent-1 { background-color: #0F0; }
+
+#form_controls {
+  margin: 1em;
+}

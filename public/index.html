@@ -23,6 +23,11 @@
       </tr>
     </table>
 
+    <div id="form_controls">
+      Frames per second:
+      <input type="number" id="fps" value="30" min="1" max="60">
+    </div>
+
     <script>
       var grid = new Sugarscape.Grid();
       var gridView = new Sugarscape.GridView(grid)
@@ -30,6 +35,11 @@
 
       var fps = 30; // Up to 60 frames per second
       var isPlaying = true;
+
+      var fpsInput = document.getElementById('fps');
+      fpsInput.addEventListener('input', function() {
+        fps = fpsInput.value;
+      });
 
       var updateInfo = function(agent, id) {
         tdEl = document.getElementById("info-" + id);
