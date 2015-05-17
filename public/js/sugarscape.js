@@ -13,6 +13,7 @@ Sugarscape.Agent = function(id, grid, square) {
   this.grid = grid;
   this.moveTo(square);
 }
+
 Sugarscape.Agent.prototype = {
   isAlive: function() {
     return this.currentSugar > 0;
