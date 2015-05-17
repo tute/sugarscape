@@ -8,6 +8,7 @@ Visualization of sugarscape:
 
 ## TODO
 
+* NO TESTS WAT
 * implement random agent births
 * implement click to display stats
 * record and display agent history
@@ -15,7 +16,3 @@ Visualization of sugarscape:
 * display graph of wealth distribution
 * add ability to track progress of an individual agent
 * allow configuration parameters to be edited through a form
-
-## Bugs
-
-* Some agents dissapear while still being alive

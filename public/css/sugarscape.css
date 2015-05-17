@@ -19,6 +19,7 @@ td.alive-false {
   width: 500px;
   height: 500px;
   margin: auto;
+  background: white;
 }
 .square {
   width: 10px;
@@ -32,10 +33,11 @@ td.alive-false {
 .sugar-3 { background-color: #C66; }
 .sugar-4 { background-color: #C33; }
 
-.occupied { background-color: #006; }
+.occupied {
+  background-color: #020;
+  border-radius: 10px;
+}
 .dead { background-color: default; }
-
-.agent-1 { background-color: #0F0; }
 
 #form_controls {
   margin: 1em;

@@ -6,9 +6,9 @@
     <script type='text/javascript' src='js/sugarscape.js'></script>
   </head>
   <body>
-    <p>Press space bar to play/pause the Sugarscape.</p>
-
     <div id="sugarscape"></div>
+
+    <p>Press "p" to play/pause the Sugarscape.</p>
 
     <table>
       <tr>
@@ -80,8 +80,8 @@
         }, 1000 / fps);
       }
 
-      window.onkeydown = function() {
-        if (event.which == 32) {
+      window.onkeydown = function(event) {
+        if (event.which == 80) {
           isPlaying = !isPlaying;
         }
       };

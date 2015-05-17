@@ -54,6 +54,7 @@ Sugarscape.Agent.prototype = {
         }
       }
     };
+    // FIXME: Should be the closest
     var sweetest = sweetestSquares[Sugarscape.random(0, sweetestSquares.length - 1)];
     // if (sweetest == undefined) {
     //   console.log('id:', this.id, 'agent:', this);
@@ -104,7 +105,7 @@ Sugarscape.Grid = function() {
   this.width = 50;
   this.height = 50;
   this.numAgents = 250;
-  this.growthProbability = 0.9;
+  this.growthProbability = 0.1;
   this.initPeaks();
   this.initSquares();
   this.initAgents();
@@ -198,11 +199,11 @@ Sugarscape.Grid.prototype = {
     });
   },
   growSugar: function() {
-    if (Math.random() > this.growthProbability) {
-      this.eachSquare(function(square) {
+    this.eachSquare(function(square) {
+      if (this.growthProbability > Math.random()) {
         square.growSugar();
-      });
-    }
+      }
+    });
   }
 }
 
