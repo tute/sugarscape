@@ -95,7 +95,7 @@ Sugarscape.Grid = function() {
   this.width = 50;
   this.height = 50;
   this.initialAgentsNum = 250;
-  this.growthProbability = 0.1;
+  this.growthDelay = 9;
   this.lastAgentId = 1;
 
   this.initPeaks();
@@ -206,9 +206,7 @@ Sugarscape.Grid.prototype = {
   },
   growSugar: function() {
     this.eachSquare(function(square) {
-      if (this.growthProbability > Math.random()) {
-        square.growSugar();
-      }
+      square.growSugar();
     });
   }
 }
@@ -217,6 +215,7 @@ Sugarscape.Square = function(x, y, maxSugar) {
   this.x = x;
   this.y = y;
   this.growthRate = 1;
+  this.harvestedNPeriodsAgo = 0;
   this.agent = null;
   this.maxSugar = maxSugar;
   this.currentSugar = this.maxSugar;
@@ -234,12 +233,17 @@ Sugarscape.Square.prototype = {
   harvestSugar: function() {
     var prevSugar = this.currentSugar;
     this.currentSugar = 0;
+    this.harvestedNPeriodsAgo = 0;
     return prevSugar;
   },
   growSugar: function() {
-    this.currentSugar += this.growthRate;
-    this.currentSugar = Math.min.apply(null, [this.maxSugar, this.currentSugar]);
-    return this.currentSugar;
+    if (this.harvestedNPeriodsAgo < grid.growthDelay) {
+      this.harvestedNPeriodsAgo += 1;
+    } else {
+      this.currentSugar += this.growthRate;
+      this.currentSugar = Math.min.apply(null, [this.maxSugar, this.currentSugar]);
+      return this.currentSugar;
+    }
   }
 }
 
