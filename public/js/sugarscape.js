@@ -9,7 +9,7 @@ Sugarscape.Agent = function(id, grid, square) {
   this.currentSugar       = Sugarscape.random(1, 10);
   this.visionRange        = Sugarscape.random(1, 6);
   this.metabolizationRate = Sugarscape.random(1, 4);
-  this.maxLifetime        = Sugarscape.random(20, 300);
+  this.maxLifetime        = Sugarscape.random(60, 100);
   this.age                = Sugarscape.random(0, this.maxLifetime);
   this.grid               = grid;
   this.square             = square;
@@ -17,7 +17,12 @@ Sugarscape.Agent = function(id, grid, square) {
 
 Sugarscape.Agent.prototype = {
   isAlive: function() {
-    return this.currentSugar > 0 && this.age <= this.maxLifetime;
+    var alive = this.currentSugar > 0 && this.age <= this.maxLifetime;
+    if (!alive && this.square.agent == this) {
+      this.square.agent = null;
+      this.grid.removeAgent(this);
+    }
+    return alive;
   },
   forage: function() {
     if (this.isAlive()) {
@@ -50,10 +55,8 @@ Sugarscape.Agent.prototype = {
         testedSquares.push(square);
         if (!square.isOccupied()) {
           if (square.currentSugar == maxSugarThusFar) {
-            // if (this.id == 1) { console.log('id:', this.id, 'candidate:', square); }
             sweetestSquares.push(square);
           } else if (square.currentSugar > maxSugarThusFar) {
-            // if (this.id == 1) { console.log('id:', this.id, 'candidate:', square); }
             maxSugarThusFar = square.currentSugar;
             sweetestSquares.length = 0;
             sweetestSquares.push(square);
@@ -70,18 +73,14 @@ Sugarscape.Agent.prototype = {
     //   console.log('id:', this.id, 'sweetestSquares:', sweetestSquares);
     //   console.log('id:', this.id, '[minX, minY]:', [minX, minY]);
     //   console.log('id:', this.id, '[maxX, maxY]:', [maxX, maxY]);
+    //   console.log(
+    //     this,
+    //     this.square,
+    //     [minX, minY],
+    //     [maxX, maxY],
+    //     sweetest
+    //   );
     // }
-    // if (this.id == 1) {
-    //   console.log('id:', this.id, 'square:', this.square);
-    //   console.log('id:', this.id, 'sweetestSquares:', sweetestSquares);
-    // }
-    // console.log(
-    //   this,
-    //   this.square,
-    //   [minX, minY],
-    //   [maxX, maxY],
-    //   sweetest
-    // );
     return sweetest;
   },
   eatSugar: function() {
@@ -95,8 +94,10 @@ Sugarscape.Agent.prototype = {
 Sugarscape.Grid = function() {
   this.width = 50;
   this.height = 50;
-  this.numAgents = 250;
+  this.initialAgentsNum = 250;
   this.growthProbability = 0.1;
+  this.lastAgentId = 1;
+
   this.initPeaks();
   this.initSquares();
   this.initAgents();
@@ -117,12 +118,26 @@ Sugarscape.Grid.prototype = {
   },
   initAgents: function() {
     this.agents = [];
-    for (var i = 0; i < this.numAgents; i++) {
-      var square = this.randomSquare();
-      while(square.isOccupied()) { square = this.randomSquare(); }
-      var agent = new Sugarscape.Agent(i, this, square);
-      this.agents[i] = agent;
+    for (var i = 0; i < this.initialAgentsNum; i++) {
+      this.createNewAgent();
     };
+  },
+  removeAgent: function(agent) {
+    index = this.agents.indexOf(agent);
+    if (index > -1) {
+      this.agents = this.agents.
+        slice(0, index).
+        concat(this.agents.slice(index + 1));
+
+      this.createNewAgent();
+    }
+  },
+  createNewAgent: function() {
+    var square = this.randomSquare();
+    while(square.isOccupied()) { square = this.randomSquare(); }
+    var agent = new Sugarscape.Agent(this.lastAgentId += 1, this, square);
+    agent.age = 0;
+    this.agents.push(agent);
   },
   randomCoords: function() {
     return [
